@@ -1,18 +1,24 @@
 {
-  "name": "Skip Counting",
   "short_name": "Skip Counting",
-  "description": "Interactive skip-counting sequence grid application.",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#0b0e14",
-  "theme_color": "#0d1117",
-  "orientation": "portrait",
+  "name": "Skip Counting",
+  "description": "Master sequence patterns and skip counting on a rectangular grid.",
   "icons": [
     {
-      "src": "./icon.svg",
-      "sizes": "192x192 512x512",
-      "type": "image/svg+xml",
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "start_url": "./index.html",
+  "background_color": "#0b0e14",
+  "theme_color": "#0d1117",
+  "display": "standalone",
+  "orientation": "portrait"
 }
