@@ -1,0 +1,18 @@
+{
+  "name": "Skip Counting",
+  "short_name": "Skip Counting",
+  "description": "Interactive skip-counting sequence grid application.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0d1117",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
