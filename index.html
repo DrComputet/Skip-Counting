@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Skip Counting Grid</title>
+  
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#0d1117" />
   <style>
@@ -63,7 +68,14 @@
       gap: 14px;
     }
 
-    .avatar {
+    .avatar-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .avatar-fallback {
       width: 44px;
       height: 44px;
       background: var(--cyan);
@@ -599,7 +611,8 @@
   <div class="app-container">
     <div class="user-card">
       <div class="user-info">
-        <div class="avatar" id="userInitial">L</div>
+        <img src="icon-192.png" alt="App Logo" class="avatar-icon" onerror="this.style.display='none'; document.getElementById('userInitial').style.display='flex';" />
+        <div class="avatar-fallback" id="userInitial" style="display:none;">L</div>
         <div>
           <div class="user-name" id="userNameDisplay">Learner 1</div>
           <div class="user-sub">WELCOME</div>
@@ -622,7 +635,6 @@
 
     <div class="content-card">
 
-      <!-- HOME -->
       <div id="panel-home" class="view-panel active">
         <div class="page-title">WELCOME</div>
         <div class="page-sub">Master sequence patterns on a rectangular grid</div>
@@ -649,7 +661,6 @@
         <button class="primary-btn" onclick="switchTab('arena')">LAUNCH PUZZLE SESSION</button>
       </div>
 
-      <!-- LEVELS -->
       <div id="panel-levels" class="view-panel">
         <div class="page-title">SELECT DIFFICULTY</div>
         <div class="page-sub">Skip intervals and grid challenges scale with difficulty</div>
@@ -683,7 +694,6 @@
         <button class="primary-btn" onclick="switchTab('arena')">CONFIRM & START</button>
       </div>
 
-      <!-- ARENA -->
       <div id="panel-arena" class="view-panel">
         <div class="arena-status">
           <span>LEVEL: <span id="currentLevelLabel">EASY</span></span>
@@ -695,7 +705,6 @@
 
         <div class="grid-4" id="grid4"></div>
 
-        <!-- Dedicated Sum Input for Difficult Mode (Appears after Grid Completion) -->
         <div class="sum-input-container" id="sumInputContainer">
           <div class="sum-label">NOW, ENTER THE SUM OF ALL 16 NUMBERS:</div>
           <input type="text" id="sumInputField" class="sum-input-box" placeholder="Enter Total Sum" readonly />
@@ -719,7 +728,6 @@
         <button class="next-btn" id="nextBtn" onclick="nextPuzzle()">NEXT PUZZLE ➔</button>
       </div>
 
-      <!-- SCORECARD -->
       <div id="panel-scorecard" class="view-panel">
         <div class="page-title">SCORECARD EVALUATION</div>
         <div class="page-sub">Detailed performance metrics across difficulty levels</div>
@@ -751,7 +759,6 @@
         <button class="danger-btn" onclick="resetStats()">RESET SCORECARD STATS</button>
       </div>
 
-      <!-- BADGES -->
       <div id="panel-badges" class="view-panel">
         <div class="page-title">TIER BADGES</div>
         <div class="page-sub">Earn stars to unlock milestone achievements</div>
@@ -759,7 +766,6 @@
         <div class="badge-list" id="badgeContainer"></div>
       </div>
 
-      <!-- ACCOUNTS -->
       <div id="panel-accounts" class="view-panel">
         <div class="page-title">MANAGE ACCOUNTS</div>
         <div class="page-sub">Switch active profile or register a new learner</div>
