@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Pair Pattern</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0d1117" />
+  <style>
+    :root {
+      --bg-dark: #0b0e14;
+      --card-bg: #151a23;
+      --card-inner: #1c2331;
+      --cyan: #00d8ff;
+      --cyan-hover: #00b3d4;
+      --red: #ff4d4d;
+      --gold: #ffc107;
+      --green: #2ecc71;
+      --text: #ffffff;
+      --text-muted: #8b949e;
+      --border: #283040;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 10px;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header */
+    .user-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .avatar {
+      width: 44px;
+      height: 44px;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 800;
+      font-size: 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-name {
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .user-sub {
+      font-size: 11px;
+      color: var(--cyan);
+      letter-spacing: 1px;
+      margin-top: 2px;
+      font-weight: 700;
+    }
+
+    .stars-badge {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .stars-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .stars-val {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gold);
+      margin-top: 2px;
+    }
+
+    /* Navigation */
+    .nav-tabs {
+      display: flex;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 4px;
+      gap: 4px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px 12px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: 0.15s ease;
+    }
+
+    .tab-btn.active {
+      background: var(--cyan);
+      color: #000;
+    }
+
+    /* Content Area */
+    .content-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .page-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .view-panel {
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .view-panel.active {
+      display: flex;
+    }
+
+    /* Home Menu */
+    .grid-menu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .menu-card {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .menu-card:hover {
+      border-color: var(--cyan);
+    }
+
+    .menu-card-icon {
+      font-size: 28px;
+    }
+
+    .menu-card-title {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .primary-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--cyan);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: 0.15s;
+    }
+
+    .primary-btn:active {
+      background: var(--cyan-hover);
+    }
+
+    /* Levels */
+    .level-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .level-item {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--cyan);
+      border-radius: 8px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .level-item.selected {
+      border: 2px solid var(--cyan);
+      border-left: 5px solid var(--cyan);
+    }
+
+    .level-title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .level-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Arena */
+    .arena-status {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-weight: 700;
+      color: var(--cyan);
+    }
+
+    .pair-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 16px;
+    }
+
+    .cell {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      height: 52px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .cell.target {
+      border-color: var(--cyan);
+      color: var(--cyan);
+      background: rgba(0, 216, 255, 0.05);
+    }
+
+    .keypad {
+      width: 100%;
+      max-width: 320px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .key {
+      padding: 14px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .key:active {
+      background: var(--border);
+    }
+
+    .next-btn {
+      width: 100%;
+      max-width: 320px;
+      padding: 14px;
+      background: var(--green);
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 1px;
+      cursor: pointer;
+      display: none;
+      margin-top: 12px;
+    }
+
+    /* Feedback Banner */
+    .feedback-banner {
+      min-height: 28px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .feedback-banner.excellent {
+      color: var(--green);
+    }
+
+    .feedback-banner.incorrect {
+      color: var(--red);
+    }
+
+    /* Scorecard & Daily Performance */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .stat-card {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--cyan);
+      border-radius: 8px;
+      padding: 14px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--cyan);
+    }
+
+    .stat-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .stat-card-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--text);
+      text-transform: uppercase;
+    }
+
+    .view-daily-link {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--cyan);
+      letter-spacing: 0.5px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .stat-val {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .daily-section-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      margin-bottom: 12px;
+    }
+
+    .daily-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .show-all-btn {
+      background: var(--card-inner);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .daily-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .daily-row {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--cyan);
+      border-radius: 6px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .daily-date {
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .daily-metrics {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 8px;
+    }
+
+    .daily-metrics span {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .daily-metrics span.highlight {
+      color: var(--cyan);
+    }
+
+    .daily-metrics span.gold-txt {
+      color: var(--gold);
+    }
+
+    /* Badges */
+    .badge-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .badge-item {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge-item.unlocked {
+      border-color: var(--green);
+    }
+
+    .badge-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .badge-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #333;
+      color: #888;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .badge-item.unlocked .badge-icon {
+      background: var(--gold);
+      color: #000;
+    }
+
+    .badge-status {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .badge-status.active {
+      color: var(--green);
+    }
+
+    /* Accounts & Forms */
+    .accounts-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .account-item {
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .account-item.active-account {
+      border-color: var(--cyan);
+      background: rgba(0, 216, 255, 0.05);
+    }
+
+    .account-name {
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .account-stars {
+      font-size: 12px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 14px;
+      background: var(--card-inner);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 12px;
+      outline: none;
+    }
+
+    .text-input:focus {
+      border-color: var(--cyan);
+    }
+
+    .danger-btn {
+      width: 100%;
+      padding: 16px;
+      background: var(--red);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <div class="user-card">
+      <div class="user-info">
+        <div class="avatar" id="userInitial">L</div>
+        <div>
+          <div class="user-name" id="userNameDisplay">Learner 1</div>
+          <div class="user-sub">WELCOME</div>
+        </div>
+      </div>
+      <div class="stars-badge">
+        <div class="stars-label">STARS</div>
+        <div class="stars-val"><span id="starsCount">0</span> ★</div>
+      </div>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="tab-btn active" onclick="switchTab('home')">HOME</button>
+      <button class="tab-btn" onclick="switchTab('levels')">LEVELS</button>
+      <button class="tab-btn" onclick="switchTab('arena')">ARENA</button>
+      <button class="tab-btn" onclick="switchTab('scorecard')">SCORECARD</button>
+      <button class="tab-btn" onclick="switchTab('badges')">BADGES</button>
+      <button class="tab-btn" onclick="switchTab('accounts')">ACCOUNTS</button>
+    </nav>
+
+    <div class="content-card">
+
+      <div id="panel-home" class="view-panel active">
+        <div class="page-title">WELCOME</div>
+        <div class="page-sub">Select an action to launch your arithmetic practice session</div>
+        
+        <div class="grid-menu">
+          <div class="menu-card" onclick="switchTab('arena')">
+            <span class="menu-card-icon">🎯</span>
+            <span class="menu-card-title">Quick Play</span>
+          </div>
+          <div class="menu-card" onclick="switchTab('levels')">
+            <span class="menu-card-icon">⚡</span>
+            <span class="menu-card-title">Select Level</span>
+          </div>
+          <div class="menu-card" onclick="switchTab('scorecard')">
+            <span class="menu-card-icon">📊</span>
+            <span class="menu-card-title">Scorecard</span>
+          </div>
+          <div class="menu-card" onclick="switchTab('badges')">
+            <span class="menu-card-icon">🏆</span>
+            <span class="menu-card-title">Achievements</span>
+          </div>
+        </div>
+
+        <button class="primary-btn" onclick="switchTab('arena')">LAUNCH PUZZLE SESSION</button>
+      </div>
+
+      <div id="panel-levels" class="view-panel">
+        <div class="page-title">SELECT DIFFICULTY</div>
+        <div class="page-sub">Target sum values and hidden cell counts scale up with difficulty</div>
+
+        <div class="level-list">
+          <div class="level-item selected" id="lvl-easy" onclick="selectLevel('easy')">
+            <div>
+              <div class="level-title">Easy</div>
+              <div class="level-desc">Randomized Addition / Subtraction rules</div>
+            </div>
+          </div>
+
+          <div class="level-item" id="lvl-medium" onclick="selectLevel('medium')">
+            <div>
+              <div class="level-title">Medium</div>
+              <div class="level-desc">Multipliers with constant offsets</div>
+            </div>
+          </div>
+
+          <div class="level-item" id="lvl-difficult" onclick="selectLevel('difficult')">
+            <div>
+              <div class="level-title">Difficult</div>
+              <div class="level-desc">Higher scalar multipliers and larger target sums</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="primary-btn" onclick="switchTab('arena')">CONFIRM & START</button>
+      </div>
+
+      <div id="panel-arena" class="view-panel">
+        <div class="arena-status">
+          <span>LEVEL: <span id="currentLevelLabel">EASY</span></span>
+          <span>TIME: <span id="timerVal">0s</span></span>
+        </div>
+
+        <div class="feedback-banner" id="feedbackBanner"></div>
+
+        <div class="pair-grid" id="pairGrid"></div>
+
+        <div class="keypad" id="keypadBox">
+          <button class="key" onclick="pressKey('1')">1</button>
+          <button class="key" onclick="pressKey('2')">2</button>
+          <button class="key" onclick="pressKey('3')">3</button>
+          <button class="key" onclick="pressKey('4')">4</button>
+          <button class="key" onclick="pressKey('5')">5</button>
+          <button class="key" onclick="pressKey('6')">6</button>
+          <button class="key" onclick="pressKey('7')">7</button>
+          <button class="key" onclick="pressKey('8')">8</button>
+          <button class="key" onclick="pressKey('9')">9</button>
+          <button class="key" onclick="pressKey('del')">⌫</button>
+          <button class="key" onclick="pressKey('0')">0</button>
+          <button class="key" style="background: var(--cyan); color:#000;" onclick="submitAnswer()">✓</button>
+        </div>
+
+        <button class="next-btn" id="nextBtn" onclick="nextPuzzle()">NEXT PUZZLE ➔</button>
+      </div>
+
+      <div id="panel-scorecard" class="view-panel">
+        <div class="page-title">SCORECARD EVALUATION</div>
+        <div class="page-sub">Click any level card to view its daily breakdown</div>
+
+        <div class="stats-grid">
+          <div class="stat-card" onclick="filterDailyScorecard('easy')">
+            <div class="stat-card-header">
+              <span class="stat-card-title">EASY</span>
+              <span class="view-daily-link">VIEW DAILY ➔</span>
+            </div>
+            <div class="stat-row"><span>GAMES PLAYED</span><span class="stat-val" id="easy-played">0</span></div>
+            <div class="stat-row"><span>ACCURACY</span><span class="stat-val" id="easy-accuracy">NA</span></div>
+            <div class="stat-row"><span>STARS EARNED</span><span class="stat-val" id="easy-stars">0</span></div>
+            <div class="stat-row"><span>AVG TIME</span><span class="stat-val" id="easy-avg">0s</span></div>
+          </div>
+
+          <div class="stat-card" onclick="filterDailyScorecard('medium')">
+            <div class="stat-card-header">
+              <span class="stat-card-title">MEDIUM</span>
+              <span class="view-daily-link">VIEW DAILY ➔</span>
+            </div>
+            <div class="stat-row"><span>GAMES PLAYED</span><span class="stat-val" id="medium-played">0</span></div>
+            <div class="stat-row"><span>ACCURACY</span><span class="stat-val" id="medium-accuracy">NA</span></div>
+            <div class="stat-row"><span>STARS EARNED</span><span class="stat-val" id="medium-stars">0</span></div>
+            <div class="stat-row"><span>AVG TIME</span><span class="stat-val" id="medium-avg">0s</span></div>
+          </div>
+
+          <div class="stat-card" onclick="filterDailyScorecard('difficult')">
+            <div class="stat-card-header">
+              <span class="stat-card-title">DIFFICULT</span>
+              <span class="view-daily-link">VIEW DAILY ➔</span>
+            </div>
+            <div class="stat-row"><span>GAMES PLAYED</span><span class="stat-val" id="difficult-played">0</span></div>
+            <div class="stat-row"><span>ACCURACY</span><span class="stat-val" id="difficult-accuracy">NA</span></div>
+            <div class="stat-row"><span>STARS EARNED</span><span class="stat-val" id="difficult-stars">0</span></div>
+            <div class="stat-row"><span>AVG TIME</span><span class="stat-val" id="difficult-avg">0s</span></div>
+          </div>
+        </div>
+
+        <div class="daily-section-header">
+          <div class="daily-title" id="dailyTitle">OVERALL DAILY SUMMARY</div>
+          <button class="show-all-btn" id="showAllBtn" style="display: none;" onclick="filterDailyScorecard('all')">SHOW ALL LEVELS</button>
+        </div>
+
+        <div class="daily-list" id="dailyListContainer"></div>
+
+        <button class="danger-btn" onclick="resetStats()">RESET SCORECARD STATS</button>
+      </div>
+
+      <div id="panel-badges" class="view-panel">
+        <div class="page-title">TIER BADGES</div>
+        <div class="page-sub">Earn stars to unlock milestone achievements</div>
+
+        <div class="badge-list" id="badgeContainer"></div>
+      </div>
+
+      <div id="panel-accounts" class="view-panel">
+        <div class="page-title">MANAGE ACCOUNTS</div>
+        <div class="page-sub">Switch active profile or register a new learner</div>
+
+        <div class="accounts-list" id="accountsListContainer"></div>
+
+        <input type="text" id="newLearnerName" class="text-input" placeholder="Enter New Learner Name" />
+        <button class="primary-btn" onclick="addProfile()">ADD NEW PROFILE</button>
+        <button class="danger-btn" onclick="deleteProfile()">DELETE CURRENT PROFILE</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
+
+    let accountList = JSON.parse(localStorage.getItem('pp_accounts')) || ['Learner 1'];
+    let activeUser = localStorage.getItem('pp_current_user') || accountList[0];
+    let currentLevel = 'easy';
+    let inputVal = '';
+    let targetAnswer = 0;
+    let timerInterval = null;
+    let elapsedSeconds = 0;
+    let selectedDailyFilter = 'all';
+
+    const BADGE_DEFINITIONS = [
+      { id: 'b1', title: 'Beginner Badge', stars: 0 },
+      { id: 'b2', title: 'Bronze Master', stars: 15 },
+      { id: 'b3', title: 'Silver Conqueror', stars: 50 },
+      { id: 'b4', title: 'Gold Champion', stars: 100 },
+      { id: 'b5', title: 'Platinum Legend', stars: 200 }
+    ];
+
+    let userData = loadUserData(activeUser);
+
+    function loadUserData(username) {
+      return JSON.parse(localStorage.getItem('pp_user_' + username)) || {
+        stars: 0,
+        easy: { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 },
+        medium: { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 },
+        difficult: { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 },
+        daily: {}
+      };
+    }
+
+    function renderBadges() {
+      const container = document.getElementById('badgeContainer');
+      container.innerHTML = '';
+
+      BADGE_DEFINITIONS.forEach(b => {
+        const unlocked = userData.stars >= b.stars;
+        const div = document.createElement('div');
+        div.className = `badge-item ${unlocked ? 'unlocked' : ''}`;
+        div.innerHTML = `
+          <div class="badge-info">
+            <div class="badge-icon">★</div>
+            <div>
+              <div style="font-weight:700;">${b.title}</div>
+              <div style="font-size:11px; color:var(--text-muted)">${b.stars} Stars required</div>
+            </div>
+          </div>
+          <div class="badge-status ${unlocked ? 'active' : ''}">${unlocked ? 'Unlocked' : 'Locked'}</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderAccounts() {
+      const container = document.getElementById('accountsListContainer');
+      container.innerHTML = '';
+
+      accountList.forEach(name => {
+        let accData = loadUserData(name);
+        let div = document.createElement('div');
+        div.className = `account-item ${name === activeUser ? 'active-account' : ''}`;
+        div.onclick = () => switchProfile(name);
+        div.innerHTML = `
+          <div class="account-name">${name} ${name === activeUser ? '(Active)' : ''}</div>
+          <div class="account-stars">${accData.stars} ★</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function renderDailyBreakdown() {
+      const container = document.getElementById('dailyListContainer');
+      const dailyTitle = document.getElementById('dailyTitle');
+      const showAllBtn = document.getElementById('showAllBtn');
+      container.innerHTML = '';
+
+      if (selectedDailyFilter === 'all') {
+        dailyTitle.innerText = 'OVERALL DAILY SUMMARY';
+        showAllBtn.style.display = 'none';
+      } else {
+        dailyTitle.innerText = `${selectedDailyFilter.toUpperCase()} - DAILY PERFORMANCE`;
+        showAllBtn.style.display = 'block';
+      }
+
+      let dailyData = userData.daily || {};
+      let dates = Object.keys(dailyData).sort().reverse();
+
+      if (dates.length === 0) {
+        container.innerHTML = `<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No daily history recorded yet.</div>`;
+        return;
+      }
+
+      dates.forEach(date => {
+        let dayStats = { played: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0, stars: 0 };
+
+        if (selectedDailyFilter === 'all') {
+          ['easy', 'medium', 'difficult'].forEach(lvl => {
+            if (dailyData[date] && dailyData[date][lvl]) {
+              let lData = dailyData[date][lvl];
+              dayStats.played += lData.played || 0;
+              dayStats.totalTime += lData.totalTime || 0;
+              dayStats.totalAttempts += lData.totalAttempts || 0;
+              dayStats.correctAttempts += lData.correctAttempts || 0;
+              dayStats.stars += lData.stars || 0;
+            }
+          });
+        } else {
+          if (dailyData[date] && dailyData[date][selectedDailyFilter]) {
+            let lData = dailyData[date][selectedDailyFilter];
+            dayStats.played += lData.played || 0;
+            dayStats.totalTime += lData.totalTime || 0;
+            dayStats.totalAttempts += lData.totalAttempts || 0;
+            dayStats.correctAttempts += lData.correctAttempts || 0;
+            dayStats.stars += lData.stars || 0;
+          }
+        }
+
+        if (dayStats.played > 0 || dayStats.totalAttempts > 0) {
+          let avg = dayStats.played > 0 ? (dayStats.totalTime / dayStats.played).toFixed(1) : 0;
+          let acc = dayStats.totalAttempts === 0 ? 'NA' : Math.round((dayStats.correctAttempts / dayStats.totalAttempts) * 100) + '%';
+
+          let row = document.createElement('div');
+          row.className = 'daily-row';
+          row.innerHTML = `
+            <div class="daily-date">${date}</div>
+            <div class="daily-metrics">
+              Puzzles: <span>${dayStats.played}</span>
+              &nbsp; Accuracy: <span class="highlight">${acc}</span>
+              &nbsp; Avg Time: <span>${avg}s</span>
+              &nbsp; Stars: <span class="gold-txt">${dayStats.stars} ★</span>
+            </div>
+          `;
+          container.appendChild(row);
+        }
+      });
+
+      if (container.children.length === 0) {
+        container.innerHTML = `<div style="font-size:11px; color:var(--text-muted); text-align:center; padding:10px;">No recorded activity for this difficulty level.</div>`;
+      }
+    }
+
+    function filterDailyScorecard(lvl) {
+      selectedDailyFilter = lvl;
+      renderDailyBreakdown();
+    }
+
+    function syncUser() {
+      document.getElementById('userNameDisplay').innerText = activeUser;
+      document.getElementById('userInitial').innerText = activeUser.charAt(0).toUpperCase();
+      document.getElementById('starsCount').innerText = userData.stars;
+
+      ['easy', 'medium', 'difficult'].forEach(lvl => {
+        let p = userData[lvl].played || 0;
+        let s = userData[lvl].stars || 0;
+        let t = userData[lvl].totalTime || 0;
+        let totAtt = userData[lvl].totalAttempts || 0;
+        let corAtt = userData[lvl].correctAttempts || 0;
+
+        let avg = p > 0 ? (t / p).toFixed(1) : 0;
+        let acc = (p === 0 || totAtt === 0) ? 'NA' : ((corAtt / totAtt) * 100).toFixed(0) + '%';
+
+        document.getElementById(`${lvl}-played`).innerText = p;
+        document.getElementById(`${lvl}-accuracy`).innerText = acc;
+        document.getElementById(`${lvl}-stars`).innerText = s;
+        document.getElementById(`${lvl}-avg`).innerText = avg + 's';
+      });
+
+      renderBadges();
+      renderAccounts();
+      renderDailyBreakdown();
+    }
+
+    function saveState() {
+      localStorage.setItem('pp_accounts', JSON.stringify(accountList));
+      localStorage.setItem('pp_user_' + activeUser, JSON.stringify(userData));
+      localStorage.setItem('pp_current_user', activeUser);
+      syncUser();
+    }
+
+    function switchProfile(name) {
+      activeUser = name;
+      userData = loadUserData(activeUser);
+      saveState();
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+
+      let btn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.innerText.toLowerCase() === tabId.toLowerCase());
+      if (btn) btn.classList.add('active');
+
+      document.getElementById('panel-' + tabId).classList.add('active');
+
+      if (tabId === 'arena') {
+        initArena();
+      } else {
+        clearInterval(timerInterval);
+      }
+    }
+
+    function selectLevel(lvl) {
+      currentLevel = lvl;
+      document.querySelectorAll('.level-item').forEach(el => el.classList.remove('selected'));
+      document.getElementById('lvl-' + lvl).classList.add('selected');
+    }
+
+    function initArena() {
+      document.getElementById('currentLevelLabel').innerText = currentLevel.toUpperCase();
+      document.getElementById('nextBtn').style.display = 'none';
+      document.getElementById('keypadBox').style.display = 'grid';
+      inputVal = '';
+      elapsedSeconds = 0;
+      document.getElementById('timerVal').innerText = '0s';
+      setFeedback('', '');
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        elapsedSeconds++;
+        document.getElementById('timerVal').innerText = elapsedSeconds + 's';
+      }, 1000);
+
+      generateDynamicSum();
+    }
+
+    function setFeedback(msg, type) {
+      const banner = document.getElementById('feedbackBanner');
+      banner.innerText = msg;
+      banner.className = 'feedback-banner ' + type;
+    }
+
+    function generateDynamicSum() {
+      let pairs = [];
+      let baseInputs = [];
+
+      if (currentLevel === 'easy') {
+        let op = Math.random() > 0.5 ? 'add' : 'sub';
+        let k = Math.floor(Math.random() * 9) + 1;
+        baseInputs = getUniqueInputs(4, 2, 20);
+
+        pairs = baseInputs.map(x => ({
+          left: op === 'sub' ? x + k : x,
+          right: op === 'sub' ? x : x + k
+        }));
+      } else if (currentLevel === 'medium') {
+        let m = Math.floor(Math.random() * 5) + 2;
+        let c = Math.floor(Math.random() * 10) + 1;
+        baseInputs = getUniqueInputs(4, 2, 12);
+
+        pairs = baseInputs.map(x => ({
+          left: x,
+          right: (x * m) + c
+        }));
+      } else {
+        let m = Math.floor(Math.random() * 8) + 3;
+        let c = Math.floor(Math.random() * 20) + 5;
+        baseInputs = getUniqueInputs(4, 5, 25);
+
+        pairs = baseInputs.map(x => ({
+          left: x,
+          right: (x * m) + c
+        }));
+      }
+
+      targetAnswer = pairs[3].right;
+
+      let grid = document.getElementById('pairGrid');
+      grid.innerHTML = '';
+
+      for (let i = 0; i < 4; i++) {
+        let leftCell = document.createElement('div');
+        leftCell.className = 'cell';
+        leftCell.innerText = pairs[i].left;
+
+        let rightCell = document.createElement('div');
+        rightCell.className = 'cell';
+        if (i === 3) {
+          rightCell.classList.add('target');
+          rightCell.id = 'targetBox';
+          rightCell.innerText = '?';
+        } else {
+          rightCell.innerText = pairs[i].right;
+        }
+
+        grid.appendChild(leftCell);
+        grid.appendChild(rightCell);
+      }
+    }
+
+    function getUniqueInputs(count, min, max) {
+      let set = new Set();
+      while (set.size < count) {
+        set.add(Math.floor(Math.random() * (max - min + 1)) + min);
+      }
+      return Array.from(set);
+    }
+
+    function pressKey(k) {
+      if (k === 'del') {
+        inputVal = inputVal.slice(0, -1);
+      } else if (inputVal.length < 5) {
+        inputVal += k;
+      }
+      let targetBox = document.getElementById('targetBox');
+      if (targetBox) targetBox.innerText = inputVal === '' ? '?' : inputVal;
+    }
+
+    function recordDailyEntry(isCorrect) {
+      const today = new Date().toISOString().split('T')[0];
+      if (!userData.daily) userData.daily = {};
+      if (!userData.daily[today]) userData.daily[today] = {};
+      if (!userData.daily[today][currentLevel]) {
+        userData.daily[today][currentLevel] = {
+          played: 0,
+          stars: 0,
+          totalTime: 0,
+          totalAttempts: 0,
+          correctAttempts: 0
+        };
+      }
+
+      let entry = userData.daily[today][currentLevel];
+      entry.totalAttempts += 1;
+
+      if (isCorrect) {
+        entry.played += 1;
+        entry.stars += 3;
+        entry.totalTime += elapsedSeconds;
+        entry.correctAttempts += 1;
+      }
+    }
+
+    function submitAnswer() {
+      if (!inputVal) return;
+
+      userData[currentLevel].totalAttempts = (userData[currentLevel].totalAttempts || 0) + 1;
+
+      if (parseInt(inputVal, 10) === targetAnswer) {
+        clearInterval(timerInterval);
+        setFeedback('EXCELLENT!', 'excellent');
+
+        userData.stars += 3;
+        userData[currentLevel].played = (userData[currentLevel].played || 0) + 1;
+        userData[currentLevel].stars = (userData[currentLevel].stars || 0) + 3;
+        userData[currentLevel].totalTime = (userData[currentLevel].totalTime || 0) + elapsedSeconds;
+        userData[currentLevel].correctAttempts = (userData[currentLevel].correctAttempts || 0) + 1;
+        
+        recordDailyEntry(true);
+        saveState();
+
+        document.getElementById('keypadBox').style.display = 'none';
+        document.getElementById('nextBtn').style.display = 'block';
+      } else {
+        setFeedback('INCORRECT! TRY AGAIN', 'incorrect');
+        recordDailyEntry(false);
+        saveState();
+        inputVal = '';
+        let targetBox = document.getElementById('targetBox');
+        if (targetBox) targetBox.innerText = '?';
+      }
+    }
+
+    function nextPuzzle() {
+      initArena();
+    }
+
+    /* Windows Physical Keyboard Support */
+    document.addEventListener('keydown', (e) => {
+      // Don't trigger game keypad when typing into text input fields
+      if (e.target.tagName === 'INPUT') return;
+
+      const activePanel = document.querySelector('.view-panel.active');
+      if (!activePanel || activePanel.id !== 'panel-arena') return;
+
+      if (e.key >= '0' && e.key <= '9') {
+        pressKey(e.key);
+      } else if (e.key === 'Backspace') {
+        pressKey('del');
+      } else if (e.key === 'Enter') {
+        const nextBtn = document.getElementById('nextBtn');
+        if (nextBtn && nextBtn.style.display !== 'none') {
+          nextPuzzle();
+        } else {
+          submitAnswer();
+        }
+      }
+    });
+
+    function addProfile() {
+      let val = document.getElementById('newLearnerName').value.trim();
+      if (val && !accountList.includes(val)) {
+        accountList.push(val);
+        activeUser = val;
+        userData = {
+          stars: 0,
+          easy: { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 },
+          medium: { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 },
+          difficult: { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 },
+          daily: {}
+        };
+        saveState();
+        document.getElementById('newLearnerName').value = '';
+      }
+    }
+
+    function deleteProfile() {
+      if (accountList.length <= 1) {
+        alert("Cannot delete the only remaining profile.");
+        return;
+      }
+      localStorage.removeItem('pp_user_' + activeUser);
+      accountList = accountList.filter(a => a !== activeUser);
+      activeUser = accountList[0];
+      userData = loadUserData(activeUser);
+      saveState();
+    }
+
+    function resetStats() {
+      userData.easy = { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 };
+      userData.medium = { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 };
+      userData.difficult = { played: 0, stars: 0, totalTime: 0, totalAttempts: 0, correctAttempts: 0 };
+      userData.daily = {};
+      userData.stars = 0;
+      saveState();
+    }
+
+    window.onload = syncUser;
+  </script>
+</body>
+</html>
